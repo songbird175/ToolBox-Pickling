@@ -29,7 +29,22 @@ def update_counter(file_name, reset=False):
 	>>> update_counter('blah2.txt')
 	2
 	"""
-	pass
+	if exists(file_name) == False or reset == True:
+		counter_file = open(file_name, 'w')
+		counter = 1
+		dump(counter, counter_file)
+		counter_file.close()
+		return counter
+	else:
+		counter_file = open(file_name, 'r+')
+		counter = load(counter_file)
+		counter += 1
+		counter_file.seek(0,0) #without this, the updated counter value gets added to the end of the document. Only the first line of the doc is loaded by load()
+		dump(counter, counter_file)
+		counter_file.close()
+		return counter
+
+
 
 if __name__ == '__main__':
 	if len(sys.argv) < 2:
